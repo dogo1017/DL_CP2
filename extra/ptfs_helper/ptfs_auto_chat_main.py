@@ -1,75 +1,36 @@
 import tkinter as tk
 from tkinter import ttk
 import pyperclip
-import requests
-import subprocess
-import sys
-from tkinter import messagebox, Tk
-LOCAL_VERSION = "1.0.0"  # Change this whenever you release a new version
-GITHUB_VERSION_URL = "https://raw.githubusercontent.com/dogo1017/DL_CP2/refs/heads/main/versions.txt"
-GITHUB_EXE_URL = "https://github.com/yourusername/yourrepo/releases/latest/download/yourapp.exe"
 
-def check_update():
-    try:
-        r = requests.get(GITHUB_VERSION_URL, timeout=5)
-        r.raise_for_status()
-        latest_version = r.text.strip()
-        if latest_version != LOCAL_VERSION:
-            # Ask user to update
-            root_check = Tk()
-            root_check.withdraw()  # hide main window
-            if messagebox.askyesno("Update Available", f"Version {latest_version} is available. Update now?"):
-                root_check.destroy()
-                # Launch updater script
-                subprocess.Popen([sys.executable, "updater.py"])
-                sys.exit()  # close current app to allow update
-            root_check.destroy()
-    except Exception as e:
-        print("Update check failed:", e)
-
-check_update()
-
-
-# ================= DATA =================  AI GENERATED LOL, IM TO LAZY TO UPDATE THE INFO
+# ================= DATA =================
 
 AIRPORTS = {
-    # Greater Rockford International — 3 runways (parallel 07/25 L, C, R)
     "IRFD": ["07L", "07C", "07R", "25L", "25C", "25R"],
-
-    # Perth International — typically 15/33 & 11/29
     "IPPH": ["15", "33", "11", "29"],
-
-    # Tokyo International (Orenji) — 02/20 and 13/31
     "ITKO": ["02", "20", "13", "31"],
-
-    # Izolirani International — single long runway (around 10/28)
     "IZOL": ["10", "28"],
-
-    # Mellor — one runway (07/25)
     "IMLR": ["07", "25"],
-
-    # Larnaca Airport — often portrayed on PTFS (similar to Larnaca LCLK)
     "ILAR": ["04", "22"],
-
-    # Paphos Airport — one runway (typically 04/22)
     "IPAP": ["04", "22"],
-
-    # Saint Barthélemy Airport — single runway 09/27
     "IBTH": ["09", "27"],
-
-    # Saba — tiny runway (often similar to real-life Saba runway)
     "IDCS": ["10", "28"],
-
-    # (Optional) Training Centre — runway 18/36
     "ITRC": ["18", "36"]
 }
+
+recent_callsigns = []
+recent_wind = {"dir": "", "spd": ""}
+MAX_RECENT = 8
 
 
 CALLSIGNS = ["AAL", "DAL", "UAL", "SWA", "JBU", "ASA", "FFT"]
 
 ROLE_ACTIONS = {
-    "Tower": ["Cleared for Takeoff", "Cleared to Land"],
-    "Ground": ["Taxi to Runway", "Hold Short"],
+    "Tower": [
+        "Cleared for Takeoff",
+        "Cleared to Land",
+        "Line Up and Wait"
+    ],
+    "Ground": ["Taxi Instructions"],
     "Center": [
         "Climb and Maintain",
         "Descend and Maintain",
@@ -80,20 +41,13 @@ ROLE_ACTIONS = {
 
 GLOBAL_MESSAGES = {
     "ATC Online":
-        "ATC online.\n\nVoice Chat / ATC Radio available and preferred; "
-        "text requests may be delayed or missed.",
-
+        "ATC online.\n\nVoice chat preferred; text requests accepted but may be missed or delayed.",
     "Runway Caution":
         "Use caution, runway may be occupied.",
-
     "Heavy Traffic":
-        "Attention all {airport} traffic: ATC is currently handling heavy traffic. "
-        "Expect possible delays. Continue operations as normal and maintain safe separation.",
-
+        "Attention all {airport} traffic: ATC is experiencing heavy traffic. Expect delays.",
     "ATC Signing Off (Uncontrolled)":
-        "{airport} ATC signing off. ATC services no longer available; "
-        "uncontrolled operations in effect. Thanks everyone, and safe flights.",
-
+        "{airport} ATC signing off. Uncontrolled operations in effect.",
     "ATC Signing Off (Handoff)":
         "{airport} ATC signing off. ATC services will continue with the next controller."
 }
@@ -102,12 +56,10 @@ GLOBAL_MESSAGES = {
 
 root = tk.Tk()
 root.title("PTFS ATC Helper")
-root.geometry("420x540")
+root.geometry("460x650")
 
 selected_role = tk.StringVar()
 selected_airport = tk.StringVar()
-
-# ================= FRAMES =================
 
 role_frame = tk.Frame(root)
 airport_frame = tk.Frame(root)
@@ -127,10 +79,11 @@ def back_to_role():
 tk.Label(role_frame, text="Select ATC Role", font=("Arial", 16)).pack(pady=20)
 
 for r in ["Tower", "Ground", "Center", "All"]:
-    tk.Button(role_frame, text=r, command=lambda x=r: (
-        selected_role.set(x),
-        show(airport_frame)
-    )).pack(fill="x", padx=70, pady=5)
+    tk.Button(
+        role_frame,
+        text=r,
+        command=lambda x=r: (selected_role.set(x), show(airport_frame))
+    ).pack(fill="x", padx=80, pady=6)
 
 # ================= AIRPORT =================
 
@@ -142,70 +95,43 @@ ttk.Combobox(
     values=list(AIRPORTS.keys())
 ).pack()
 
-tk.Button(
-    airport_frame,
-    text="Continue",
-    command=lambda: show(menu_frame)
-).pack(pady=20)
-
-tk.Button(
-    airport_frame,
-    text="Change ATC Role",
-    command=back_to_role
-).pack()
+tk.Button(airport_frame, text="Continue", command=lambda: show(menu_frame)).pack(pady=15)
+tk.Button(airport_frame, text="Change Role", command=back_to_role).pack()
 
 # ================= MAIN MENU =================
 
-tk.Label(menu_frame, text="Select Menu", font=("Arial", 16)).pack(pady=20)
+tk.Label(menu_frame, text="Menu", font=("Arial", 16)).pack(pady=20)
 
 def build_menu():
     for w in menu_frame.winfo_children()[1:]:
         w.destroy()
 
-    roles = ["Tower", "Ground", "Center"] if selected_role.get() == "All" else [selected_role.get()]
+    roles = (
+        ["Tower", "Ground", "Center"]
+        if selected_role.get() == "All"
+        else [selected_role.get()]
+    )
 
     for r in roles:
-        tk.Button(
-            menu_frame,
-            text=r,
-            command=lambda x=r: open_role_menu(x)
-        ).pack(fill="x", padx=70, pady=5)
+        tk.Label(menu_frame, text=r, font=("Arial", 13, "bold")).pack(pady=(10, 2))
+
+        for act in ROLE_ACTIONS[r]:
+            tk.Button(
+                menu_frame,
+                text=act,
+                command=lambda a=act, role=r: open_action(role, a)
+            ).pack(fill="x", padx=80, pady=4)
 
     tk.Button(
         menu_frame,
         text="Global / ATC Messages",
         command=open_global
-    ).pack(fill="x", padx=70, pady=10)
+    ).pack(fill="x", padx=80, pady=10)
 
-    tk.Button(
-        menu_frame,
-        text="Change Airport",
-        command=lambda: show(airport_frame)
-    ).pack(pady=5)
-
-    tk.Button(
-        menu_frame,
-        text="Change ATC Role",
-        command=back_to_role
-    ).pack(pady=5)
+    tk.Button(menu_frame, text="Change Airport", command=lambda: show(airport_frame)).pack(pady=4)
+    tk.Button(menu_frame, text="Change Role", command=back_to_role).pack()
 
 menu_frame.bind("<Visibility>", lambda e: build_menu())
-
-# ================= ROLE ACTIONS =================
-
-def open_role_menu(role):
-    clear(action_frame)
-    tk.Label(action_frame, text=f"{role} Actions", font=("Arial", 15)).pack(pady=10)
-
-    for act in ROLE_ACTIONS[role]:
-        tk.Button(
-            action_frame,
-            text=act,
-            command=lambda a=act: open_details(role, a)
-        ).pack(fill="x", padx=60, pady=4)
-
-    global_back(action_frame)
-    show(action_frame)
 
 # ================= GLOBAL =================
 
@@ -218,145 +144,214 @@ def open_global():
 
     def copy(msg):
         pyperclip.copy(msg)
-        status.config(text="✔ Copied to clipboard")
+        status.config(text="✔ Copied")
 
     for name, template in GLOBAL_MESSAGES.items():
         tk.Button(
             action_frame,
             text=name,
-            command=lambda t=template: copy(
-                t.format(airport=selected_airport.get())
-            )
-        ).pack(fill="x", padx=40, pady=4)
+            command=lambda t=template: copy(t.format(airport=selected_airport.get()))
+        ).pack(fill="x", padx=60, pady=4)
 
-    global_back(action_frame)
+    tk.Button(action_frame, text="Back", command=lambda: show(menu_frame)).pack(pady=10)
     show(action_frame)
 
-# ================= DETAILS =================
+# ================= ACTION ROUTER =================
 
-# ===== GLOBAL STORAGE =====
-recent_callsigns = []  # store last N full callsigns
-recent_winds = []      # store last N wind entries as tuples (dir, spd)
-MAX_CALLSIGNS = 10
+def open_action(role, action):
+    if action == "Taxi Instructions":
+        open_taxi(role)
+    else:
+        open_generic(role, action)
 
-def open_details(role, action):
+# ================= TAXI (UNCHANGED) =================
+
+def open_taxi(role):
     clear(action_frame)
+    tk.Label(action_frame, text="Taxi Instructions", font=("Arial", 15)).pack(pady=10)
 
-    runway = tk.StringVar()
     callsign = tk.StringVar()
     flight = tk.StringVar()
-    wind_dir = tk.StringVar()
-    wind_spd = tk.StringVar()
-    turn_dir = tk.StringVar()
-    heading = tk.StringVar()
 
-    tk.Label(action_frame, text=f"{role} – {action}", font=("Arial", 14)).pack(pady=10)
+    ttk.Label(action_frame, text="Callsign").pack()
+    ttk.Combobox(action_frame, values=CALLSIGNS, textvariable=callsign).pack()
 
-    # Runway
-    ttk.Label(action_frame, text="Runway").pack()
-    ttk.Combobox(action_frame, textvariable=runway, values=AIRPORTS[selected_airport.get()]).pack()
+    ttk.Label(action_frame, text="Flight Number").pack()
+    ttk.Entry(action_frame, textvariable=flight).pack()
+
+    tk.Label(action_frame, text="Taxi Route").pack(pady=6)
+    route_box = tk.Listbox(action_frame, height=5)
+    route_box.pack()
+
+    route_entry = tk.StringVar()
+    ttk.Entry(action_frame, textvariable=route_entry).pack()
+
+    def add():
+        if route_entry.get():
+            route_box.insert(tk.END, route_entry.get())
+            route_entry.set("")
+
+    def remove():
+        if route_box.curselection():
+            route_box.delete(route_box.curselection())
+
+    tk.Button(action_frame, text="Add Taxiway", command=add).pack(pady=2)
+    tk.Button(action_frame, text="Remove Selected", command=remove).pack(pady=2)
+
+    target_type = tk.StringVar()
+    ttk.Combobox(
+        action_frame,
+        textvariable=target_type,
+        values=[
+            "Holding Point (Short of Runway)",
+            "Gate",
+            "Cargo Apron",
+            "Fuel Stand",
+            "Custom"
+        ]
+    ).pack(pady=6)
+
+    runway = tk.StringVar()
+    hold = tk.StringVar()
+    gate = tk.StringVar()
+    custom = tk.StringVar()
+
+    dynamic = tk.Frame(action_frame)
+    dynamic.pack()
+
+    def refresh(*_):
+        for w in dynamic.winfo_children():
+            w.destroy()
+
+        if "Holding" in target_type.get():
+            ttk.Label(dynamic, text="Runway").pack()
+            ttk.Entry(dynamic, textvariable=runway).pack()
+            ttk.Label(dynamic, text="Holding Point").pack()
+            ttk.Entry(dynamic, textvariable=hold).pack()
+
+        elif target_type.get() == "Gate":
+            ttk.Label(dynamic, text="Gate").pack()
+            ttk.Entry(dynamic, textvariable=gate).pack()
+
+        elif target_type.get() == "Custom":
+            ttk.Label(dynamic, text="Destination").pack()
+            ttk.Entry(dynamic, textvariable=custom).pack()
+
+    target_type.trace_add("write", refresh)
+
+    def generate():
+        cs = f"{callsign.get()}{flight.get()}"
+        route = ", ".join(route_box.get(0, tk.END))
+
+        if "Holding" in target_type.get():
+            msg = f"{cs}, taxi to holding point {hold.get()}, hold short of runway {runway.get()} via {route}."
+        elif target_type.get() == "Gate":
+            msg = f"{cs}, taxi to gate {gate.get()} via {route}."
+        elif target_type.get() == "Cargo Apron":
+            msg = f"{cs}, taxi to the cargo apron via {route}."
+        elif target_type.get() == "Fuel Stand":
+            msg = f"{cs}, taxi to the fuel stand via {route}."
+        else:
+            msg = f"{cs}, taxi to {custom.get()} via {route}."
+
+        pyperclip.copy(msg)
+        show(menu_frame)
+
+    tk.Button(action_frame, text="Generate & Copy", command=generate).pack(pady=10)
+    tk.Button(action_frame, text="Back", command=lambda: show(menu_frame)).pack()
+    show(action_frame)
+
+# ================= GENERIC (RUNWAY-AWARE) =================
+
+def open_generic(role, action):
+    clear(action_frame)
+
+    callsign = tk.StringVar()
+    flight = tk.StringVar()
+    runway = tk.StringVar()
+    wind_dir = tk.StringVar(value=recent_wind["dir"])
+    wind_spd = tk.StringVar(value=recent_wind["spd"])
+
+    tk.Label(action_frame, text=action, font=("Arial", 15)).pack(pady=10)
 
     # Callsign
     ttk.Label(action_frame, text="Callsign").pack()
-    callsign_entry = ttk.Combobox(action_frame, values=CALLSIGNS, textvariable=callsign)
-    callsign_entry.pack()
+    ttk.Combobox(action_frame, values=CALLSIGNS, textvariable=callsign).pack()
 
-    # Flight #
-    ttk.Label(action_frame, text="Flight #").pack()
-    flight_entry = ttk.Entry(action_frame, textvariable=flight)
-    flight_entry.pack()
+    ttk.Label(action_frame, text="Flight Number").pack()
+    ttk.Entry(action_frame, textvariable=flight).pack()
 
-    # Tower winds
+    # Runway (Tower only)
+    if role == "Tower":
+        ttk.Label(action_frame, text="Runway").pack()
+        ttk.Combobox(
+            action_frame,
+            values=AIRPORTS[selected_airport.get()],
+            textvariable=runway
+        ).pack()
+
+    # Wind (Takeoff / Landing only)
     if role == "Tower" and action in ["Cleared for Takeoff", "Cleared to Land"]:
         ttk.Label(action_frame, text="Wind Direction").pack()
-        wind_dir_entry = ttk.Entry(action_frame, textvariable=wind_dir)
-        wind_dir_entry.pack()
+        ttk.Entry(action_frame, textvariable=wind_dir).pack()
 
-        ttk.Label(action_frame, text="Wind Speed (knots)").pack()
-        wind_spd_entry = ttk.Entry(action_frame, textvariable=wind_spd)
-        wind_spd_entry.pack()
+        ttk.Label(action_frame, text="Wind Speed (kt)").pack()
+        ttk.Entry(action_frame, textvariable=wind_spd).pack()
 
-        # Button to use last wind
-        if recent_winds:
-            last_wind_dir, last_wind_spd = recent_winds[-1]
-            wind_dir.set(last_wind_dir)
-            wind_spd.set(last_wind_spd)
+    # Recent callsigns
+    ttk.Label(action_frame, text="Recent Callsigns").pack(pady=6)
+    cs_box = tk.Listbox(action_frame, height=5)
+    cs_box.pack()
 
-        tk.Button(action_frame, text="Use Last Wind", command=lambda: (
-            wind_dir.set(recent_winds[-1][0] if recent_winds else ""),
-            wind_spd.set(recent_winds[-1][1] if recent_winds else "")
-        )).pack(pady=2)
-
-    # Turn Heading
-    if action == "Turn Heading":
-        ttk.Label(action_frame, text="Turn Direction").pack()
-        ttk.Combobox(action_frame, values=["Left", "Right"], textvariable=turn_dir).pack()
-        ttk.Label(action_frame, text="Heading").pack()
-        ttk.Entry(action_frame, textvariable=heading).pack()
-
-    # Recent full callsigns
-    tk.Label(action_frame, text="Recent Callsigns").pack()
-    cs_listbox = tk.Listbox(action_frame, height=5)
-    cs_listbox.pack()
     for cs in recent_callsigns:
-        cs_listbox.insert(tk.END, cs)
+        cs_box.insert(tk.END, cs)
 
-    # Fill all fields when clicked
-    def fill_recent(event):
-        if cs_listbox.curselection():
-            full_cs = cs_listbox.get(cs_listbox.curselection()[0])
-
-            # Split callsign and number
-            for code in CALLSIGNS:
-                if full_cs.startswith(code):
-                    callsign.set(code)
-                    flight.set(full_cs[len(code):])
+    def fill_recent(_):
+        if cs_box.curselection():
+            full = cs_box.get(cs_box.curselection())
+            for c in CALLSIGNS:
+                if full.startswith(c):
+                    callsign.set(c)
+                    flight.set(full[len(c):])
                     break
 
-            # Fill last wind if stored
-            for item in reversed(recent_winds):
-                # match this callsign? optional, or just last wind
-                wind_dir.set(item[0])
-                wind_spd.set(item[1])
-                break  # take most recent
+    cs_box.bind("<<ListboxSelect>>", fill_recent)
 
-    cs_listbox.bind('<<ListboxSelect>>', fill_recent)
-
-    # Generate button
     def generate():
-        full_callsign = f"{callsign.get()}{flight.get()}"
-        # Save full callsign
-        if full_callsign not in recent_callsigns:
-            recent_callsigns.append(full_callsign)
-            if len(recent_callsigns) > MAX_CALLSIGNS:
+        full_cs = f"{callsign.get()}{flight.get()}"
+
+        if full_cs and full_cs not in recent_callsigns:
+            recent_callsigns.append(full_cs)
+            if len(recent_callsigns) > MAX_RECENT:
                 recent_callsigns.pop(0)
 
         # Save wind
         if role == "Tower" and action in ["Cleared for Takeoff", "Cleared to Land"]:
-            recent_winds.append((wind_dir.get(), wind_spd.get()))
-            if len(recent_winds) > MAX_CALLSIGNS:
-                recent_winds.pop(0)
+            recent_wind["dir"] = wind_dir.get()
+            recent_wind["spd"] = wind_spd.get()
 
-        # Build message
+        # Message build
         if action == "Cleared for Takeoff":
-            msg = f"{full_callsign}, cleared for takeoff Runway {runway.get()}, wind {wind_dir.get()} at {wind_spd.get()} knots. Have a good flight."
+            msg = (
+                f"{full_cs}, cleared for takeoff Runway {runway.get()}, "
+                f"wind {wind_dir.get()} at {wind_spd.get()} knots."
+            )
+
         elif action == "Cleared to Land":
-            msg = f"{full_callsign}, cleared to land Runway {runway.get()}, wind {wind_dir.get()} at {wind_spd.get()} knots."
-        elif action == "Turn Heading":
-            msg = f"{full_callsign}, turn {turn_dir.get().lower()} heading {heading.get()}."
-        elif action == "Cleared ILS Approach":
-            msg = f"{full_callsign}, cleared ILS approach Runway {runway.get()}."
+            msg = (
+                f"{full_cs}, cleared to land Runway {runway.get()}, "
+                f"wind {wind_dir.get()} at {wind_spd.get()} knots."
+            )
+
         else:
-            msg = f"{full_callsign}, {action.lower()}."
+            msg = f"{full_cs}, {action.lower()}."
 
         pyperclip.copy(msg)
-        open_role_menu(role)
+        show(menu_frame)
 
     tk.Button(action_frame, text="Generate & Copy", command=generate).pack(pady=10)
-    global_back(action_frame)
+    tk.Button(action_frame, text="Back", command=lambda: show(menu_frame)).pack()
     show(action_frame)
-
-
 
 
 # ================= HELPERS =================
@@ -364,10 +359,6 @@ def open_details(role, action):
 def clear(frame):
     for w in frame.winfo_children():
         w.destroy()
-
-def global_back(frame):
-    tk.Button(frame, text="Change ATC Role", command=back_to_role).pack(pady=5)
-    tk.Button(frame, text="Back", command=lambda: show(menu_frame)).pack()
 
 # ================= START =================
 
