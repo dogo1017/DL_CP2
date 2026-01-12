@@ -1,8 +1,15 @@
 #DL 1st, financial calculator
 
+import os
+
+def clear_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 calcs = ["goal save"]
 
 # define stupid proofing function that takes in arguments of the required input, and datatype, and then using try and except to test if it is the right type
+
 
 def sp_input(type):
     while True:
@@ -25,6 +32,7 @@ def sp_input(type):
             except TypeError:
                 print("That is not a valid input\n")
                 continue
+        
     
 
 
@@ -32,8 +40,35 @@ def sp_input(type):
 def goal_save():
     print("1) Monthly\n2) Weekly")
     contribute_time = 0
+    contribute_amount = 0
+    save_goal = 0
+    while save_goal <= 0:
+        save_goal = sp_input(int)
+        if save_goal <= 0:
+            print("That is not a valid input")
     while contribute_time != 1 or contribute_time != 2:
         contribute_time = sp_input(int)
+        if contribute_time != 1 or contribute_time != 2:
+            print("That is not a valid input")
+    while contribute_amount <= 0:
+        contribute_amount = sp_input(int)
+        if contribute_time <= 0:
+            print("That is not a valid input")
+    clear_terminal()
+    def gs_calc():
+            save_time = save_goal/contribute_amount
+            if contribute_time == 1:
+                save_time = f"{save_time} Months"
+            else:
+                save_time = f"{save_time} Weeks"
+    if contribute_time == 1:
+        contribute_time = "Monthly"
+    else:
+        contribute_time = "Weekly"
+    print(f"Contribution Type: {contribute_time}")
+    print(f"Contribution Amount: {contribute_amount}")
+    print(f"Save Goal")
+        
 
 # define compound_interest function that uses sp func to take in the starting amount, interest rate, years soent compounding, and then define the function ci_calc which takes the starting amount, multiplies the amount by the percent, adds it, and then loops through that process for as many years spent compounding
 
