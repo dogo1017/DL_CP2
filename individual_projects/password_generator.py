@@ -19,7 +19,7 @@ def menu(options, **mod):
     # Initialize toggle values - create dictionary to store True/False for each toggle option
     tog = {}
     for i in toggle:
-        tog[i] = False  # Default to False
+        tog[i] = True # Default to True
     
     error_message = ""
     
@@ -50,7 +50,7 @@ def menu(options, **mod):
                 print(f"{prefix}{option}")
         
         # Display navigation instructions at bottom of menu
-        print("\nUse side arrow keys to change values and up/down to change option")
+        print("\nUse side arrow keys to change values, up/down to change option, and enter to select")
         
         # Get key press from user
         key = msvcrt.getch()
