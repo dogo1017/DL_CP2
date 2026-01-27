@@ -2,6 +2,7 @@
 
 import os
 import msvcrt
+import random
 
 def menu(options, **mod):
     number = mod.get('accesed', [])
@@ -44,6 +45,47 @@ def menu(options, **mod):
                     return num[index]
             return index
         print(num)
+
+
+def generate_password(requirments):
+    password_len = requirments[0]
+    lower_case = requirments[1] 
+    upper_case = requirments[2] 
+    numbers = requirments[3]
+    special_chars = requirments[4]
+
+    remaining_chars = password_len
+    password_requirements = []
+
+    password_outline = {}
+    password = []
+
+    if lower_case == True:
+        password_outline.append[[1]]
+        remaining_chars -= 1
+        password_requirements.append[1]
+    if upper_case == True:
+        password_outline.append[[2]]
+        remaining_chars -= 1
+        password_requirements.append[2]
+    if numbers == True:
+        password_outline.append[[3]]
+        remaining_chars -= 1
+        password_requirements.append[3]
+    if special_chars == True:
+        password_outline.append[[4]]
+        remaining_chars -= 1
+        password_requirements.append[4]
+
+    for i in range(remaining_chars):
+        password_outline.append([random.choice([1,2,3,4])])
+
+    for x in range password_outline:
+        
+        
+
+    
+
 
 
 def main():
