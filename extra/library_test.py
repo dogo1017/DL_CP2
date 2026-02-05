@@ -1,3 +1,3 @@
 import dog_inp
 
-dog_inp.menu(["Hello","two"])
+dog_inp.menu(["Hello","to"])
