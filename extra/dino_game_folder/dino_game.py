@@ -1,69 +1,108 @@
 import pygame
 import random
+
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Dino Game") # Set a title for the window
+
 # Create a player rectangle (x, y, width, height)
-player = pygame.Rect(150, 500, 50, 50) 
-# Create an obstacle
-obstacle = pygame.Rect(900, 500, 50, 50)
+player = pygame.Rect(150, 500, 50, 50)
+player_color = (0, 255, 0)
+
+# Load the image
+try:
+    # IMPORTANT: Update this path to the actual location of your image file
+    image_surface = pygame.image.load('DL_CP2/extra/dino_game_folder/standing_dino.jpg').convert_alpha()
+    # Resize the image to fit the player rect size
+    image_surface = pygame.transform.scale(image_surface, (player.width, player.height))
+    use_image = True
+except pygame.error:
+    print("Warning: Could not load image. Using a colored rectangle instead.")
+    use_image = False
+
+# Game variables
+velocity_y = 0 # Vertical velocity for jumping
+gravity = 0.5
+ground_y = 500
+touching_ground = True
+obstacles = []
+obstacle_color = (255, 0, 0)
+obstacle_speed = 5
+SPAWN_CACTUS_EVENT = pygame.USEREVENT + 1
+pygame.time.set_timer(SPAWN_CACTUS_EVENT, 2000) # Spawn a cactus group every 2 seconds
 
 clock = pygame.time.Clock()
-"""
-image_surface = pygame.image.load('DL_CP2/extra/dino_game_folder/unnamed.png').convert_alpha()
-image_rect = image_surface.get_rect()
-image_rect.center = (800 // 2, 600 // 2) # Position the image
-screen.blit(image_surface, image_rect)
-"""
-obstacles = []
+running = True
 
-def spawn_cactus():
-    count = random.randint(1, 3)    # Group size (1, 2, or 3 cacti)
-    height = random.choice([40, 60, 80])  # 3 different cactus heights
+def spawn_cactus_group():
+    """Spawns a group of 1 to 3 cacti with random heights."""
+    count = random.randint(1, 3) # Group size (1, 2, or 3 cacti)
+    # Define possible cactus heights and widths
+    cactus_configs = [(30, 40), (30, 60), (30, 80)]
     
     for i in range(count):
-        # Spacing each cactus in the group by 30 pixels
-        new_cactus = pygame.Rect(900 + (i * 30), 550 - height, 30, height)
+        width, height = random.choice(cactus_configs)
+        # Spacing each cactus in the group by 35 pixels (width + padding)
+        new_cactus = pygame.Rect(800 + (i * 35), ground_y + (50 - height), width, height)
         obstacles.append(new_cactus)
 
-velocity = 0
-running = True
-touching_ground = True
-spawn_cactus()
+# Call the initial spawn function
+spawn_cactus_group()
+start = 0
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == SPAWN_CACTUS_EVENT:
+            spawn_cactus_group()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and touching_ground:
+                velocity_y = -12 # Jump velocity (negative goes up in Pygame)
+                touching_ground = False
     
-    for obstacle in obstacles:
-      obstacle.x -= 5
     
-    
-    
-    keys = pygame.key.get_pressed()
-    if touching_ground:
-        if keys[pygame.K_SPACE]: 
-            velocity = -12  # Use = to assign, and negative to go UP
 
-    player.y += velocity    # Apply velocity to the player's position
- 
-    # Collision Detection
-    if player.y >= 500:
-        player.y = 500
-        velocity = 0        # Stop moving when hitting the ground
+    # 1. Update Game Logic
+    
+    # Apply gravity and update player position
+    player.y += velocity_y
+    velocity_y += gravity
+
+    # Ground collision detection
+    if player.y >= ground_y:
+        player.y = ground_y
+        velocity_y = 0
         touching_ground = True
+
+    # Update obstacle positions and remove off-screen obstacles
+    for obstacle in obstacles[:]: # Iterate over a slice to safely remove elements
+        obstacle.x -= obstacle_speed
+        if obstacle.x + obstacle.width < 0:
+            obstacles.remove(obstacle)
+
+    # Collision Detection (Player vs Obstacles)
+    for obstacle in obstacles:
+        if player.colliderect(obstacle):
+            print("Game Over!")
+            running = False # End the game loop
+
+    # 2. Drawing
+    screen.fill((255, 255, 255)) # Fill screen with white (standard dino game background)
+
+    # Draw the player
+    if use_image:
+        # Update image position to match the rect's top-left corner
+        screen.blit(image_surface, (player.x, player.y)) 
     else:
-        touching_ground = False
-        velocity += 0.5
-    # Draw
-    screen.fill((0, 0, 0))
-    pygame.draw.rect(screen, (0, 255, 0), player) # Draw player
-    pygame.draw.rect(screen, (255, 0, 0), obstacle) # Draw obstacle
+        pygame.draw.rect(screen, player_color, player)
+
+    # Draw all obstacles
+    for obstacle in obstacles:
+        pygame.draw.rect(screen, obstacle_color, obstacle)
+
+    # 3. Update the display
     pygame.display.flip()
     clock.tick(60) # 60 FPS
-    if obstacle.x <= -50:
-      obstacle.x = 900
-    if player.colliderect(obstacle):
-        print("Game Over!")
-        running = False
+    
 
 pygame.quit()
