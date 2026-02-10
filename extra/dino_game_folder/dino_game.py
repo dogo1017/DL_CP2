@@ -23,6 +23,8 @@ def load_image(name, scale=None):
 small_cacti = [load_image(f'extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
 large_cacti = [load_image(f'extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
 
+ground = load_image('extra/dino_game_folder/ground.png')
+
 font_imgs = [load_image(f'extra/dino_game_folder/{i}.png') for i in range(0, 10)]
 hi_img = load_image('extra/dino_game_folder/hi.png')
 
@@ -73,10 +75,11 @@ def spawn_cactus_group():
 
 spawn_cactus_group()
 
+ground_x = 300
+
 while running:
     dig1, dig2, dig3, dig4, dig5 = 0, 0, 0, 0, 0
     score_time = (pygame.time.get_ticks() - start_ticks) // 100
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -84,7 +87,7 @@ while running:
             spawn_cactus_group()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and player.y >= ground_y:
-                velocity_y = -12   
+                velocity_y = -13   
                 if use_image: current_image = image_surface_standing
         elif event.type == ANIMATION_EVENT:
             if use_image and player.y >= ground_y:
@@ -95,10 +98,11 @@ while running:
 
     player.y += velocity_y
     velocity_y += gravity
-    if player.y >= ground_y:
-        player.y = ground_y
+    if player.y >= ground_y + 5:
+        player.y = ground_y + 5
         velocity_y = 0
 
+    ground_x -= 1
     for obs in obstacles[:]:
         obs['rect'].x -= obstacle_speed
         if obs['rect'].x + obs['rect'].width < 0:
@@ -110,6 +114,7 @@ while running:
     score_str = str(score_time).zfill(5)
     for i, num in enumerate(score_str):
         exec(f"dig{i+1} = int(num)")
+    screen.blit(pygame.transform.scale(ground, (2400, 24)), (ground_x , 548)) 
     screen.blit(pygame.transform.scale(font_imgs[dig1], (20, 20)), (700, 20))
     screen.blit(pygame.transform.scale(font_imgs[dig2], (20, 20)), (720, 20))
     screen.blit(pygame.transform.scale(font_imgs[dig3], (20, 20)), (740, 20))
