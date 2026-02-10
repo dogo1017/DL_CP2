@@ -35,7 +35,11 @@ def menu(options, **mod):
                 found = True
                 break
         if not found:
-            tog[i] = default_opts[0]
+            # Use default_vals if provided, otherwise use default_opts
+            if default_TF and i < len(default_TF):
+                tog[i] = default_TF[i]
+            else:
+                tog[i] = default_opts[0]
     
     while True:
         os.system('cls')
