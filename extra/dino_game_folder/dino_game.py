@@ -2,6 +2,8 @@ import pygame
 import random
 import os
 
+high_score = 164
+
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Dino Game")
@@ -45,7 +47,7 @@ velocity_y = 0
 gravity = 0.5
 ground_y = 500
 obstacles = []
-speed = 4
+speed = 6
 
 SPAWN_CACTUS_EVENT = pygame.USEREVENT + 1
 pygame.time.set_timer(SPAWN_CACTUS_EVENT, 1500)
@@ -83,7 +85,7 @@ while running:
     dig1, dig2, dig3, dig4, dig5 = 0, 0, 0, 0, 0
     score_time = (pygame.time.get_ticks() - start_ticks) // 100
 
-    speed *= 1.001
+    speed += 0.001
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -127,8 +129,8 @@ while running:
 
     screen.fill((255, 255, 255))
 
-    screen.blit(ground_scaled, (ground_x1, 548))
-    screen.blit(ground_scaled, (ground_x2, 548))
+    screen.blit(ground_scaled, (ground_x1, 538))
+    screen.blit(ground_scaled, (ground_x2, 538))
   
     score_str = str(score_time).zfill(5)
     for i, num in enumerate(score_str):
@@ -138,7 +140,16 @@ while running:
     screen.blit(pygame.transform.scale(font_imgs[dig3], (20, 20)), (740, 20))
     screen.blit(pygame.transform.scale(font_imgs[dig4], (20, 20)), (760, 20))
     screen.blit(pygame.transform.scale(font_imgs[dig5], (20, 20)), (780, 20))
-    screen.blit(pygame.transform.scale(hi_img, (20, 20)), (680, 20))
+    screen.blit(pygame.transform.scale(hi_img, (20, 20)), (560, 20))
+
+    high_score_str = str(high_score ).zfill(5)
+    for i, num in enumerate(high_score_str):
+        exec(f"dig{i+1} = int(num)")
+    screen.blit(pygame.transform.scale(font_imgs[dig1], (20, 20)), (580, 20))
+    screen.blit(pygame.transform.scale(font_imgs[dig2], (20, 20)), (600, 20))
+    screen.blit(pygame.transform.scale(font_imgs[dig3], (20, 20)), (620, 20))
+    screen.blit(pygame.transform.scale(font_imgs[dig4], (20, 20)), (640, 20))
+    screen.blit(pygame.transform.scale(font_imgs[dig5], (20, 20)), (660, 20))
 
     if use_image:
         screen.blit(current_image, player.topleft)
