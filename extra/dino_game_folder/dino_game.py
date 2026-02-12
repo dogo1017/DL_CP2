@@ -20,11 +20,11 @@ def load_image(name, scale=None):
         surf.fill((255, 0, 0))
         return surf
 
-small_cacti = [load_image(f'extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
-large_cacti = [load_image(f'extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
-
-font_imgs = [load_image(f'extra/dino_game_folder/{i}.png') for i in range(0, 10)]
-hi_img = load_image('extra/dino_game_folder/hi.png')
+small_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
+large_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
+ground = load_image('DL_CP2/extra/dino_game_folder/ground.png')
+font_imgs = [load_image(f'DL_CP2/extra/dino_game_folder/{i}.png') for i in range(0, 10)]
+hi_img = load_image('DL_CP2/extra/dino_game_folder/hi.png')
 
 use_image = False
 image_surface_standing = None
@@ -33,9 +33,9 @@ image_surface_run2 = None
 current_image = None
 
 try:
-    image_surface_standing = load_image('extra/dino_game_folder/standing_dino.jpg', (player.width, player.height))
-    image_surface_run1 = load_image('extra/dino_game_folder/running1.png', (player.width, player.height))
-    image_surface_run2 = load_image('extra/dino_game_folder/running2.png', (player.width, player.height))
+    image_surface_standing = load_image('DL_CP2/extra/dino_game_folder/standing_dino.jpg', (player.width, player.height))
+    image_surface_run1 = load_image('DL_CP2/extra/dino_game_folder/running1.png', (player.width, player.height))
+    image_surface_run2 = load_image('DL_CP2/extra/dino_game_folder/running2.png', (player.width, player.height))
     current_image = image_surface_run1
     use_image = True
 except:
@@ -44,15 +44,15 @@ except:
 velocity_y = 0
 gravity = 0.5
 ground_y = 500
-obstacles = [] 
-obstacle_speed = 5
+obstacles = []
+speed = 4
+
 SPAWN_CACTUS_EVENT = pygame.USEREVENT + 1
 pygame.time.set_timer(SPAWN_CACTUS_EVENT, 1500)
 ANIMATION_EVENT = pygame.USEREVENT + 2
 pygame.time.set_timer(ANIMATION_EVENT, 100)
 
 start_ticks = pygame.time.get_ticks()
-
 clock = pygame.time.Clock()
 running = True
 
@@ -73,9 +73,17 @@ def spawn_cactus_group():
 
 spawn_cactus_group()
 
+ground_scaled = pygame.transform.scale(ground, (2400, 20))
+ground_width = ground_scaled.get_width()
+ground_x1 = 0
+ground_x2 = ground_width
+
+
 while running:
     dig1, dig2, dig3, dig4, dig5 = 0, 0, 0, 0, 0
     score_time = (pygame.time.get_ticks() - start_ticks) // 100
+
+    speed *= 1.001
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -84,8 +92,9 @@ while running:
             spawn_cactus_group()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and player.y >= ground_y:
-                velocity_y = -12   
-                if use_image: current_image = image_surface_standing
+                velocity_y = -13
+                if use_image:
+                    current_image = image_surface_standing
         elif event.type == ANIMATION_EVENT:
             if use_image and player.y >= ground_y:
                 if current_image == image_surface_run1:
@@ -95,18 +104,32 @@ while running:
 
     player.y += velocity_y
     velocity_y += gravity
-    if player.y >= ground_y:
-        player.y = ground_y
+    if player.y >= ground_y + 5:
+        player.y = ground_y + 5
         velocity_y = 0
 
+    ground_x1 -= speed
+    ground_x2 -= speed
+
+    if ground_x1 + ground_width < 0:
+        ground_x1 = ground_x2 + ground_width
+
+    if ground_x2 + ground_width < 0:
+        ground_x2 = ground_x1 + ground_width
+
+
     for obs in obstacles[:]:
-        obs['rect'].x -= obstacle_speed
+        obs['rect'].x -= speed
         if obs['rect'].x + obs['rect'].width < 0:
             obstacles.remove(obs)
         if player.colliderect(obs['rect']):
             running = False
 
     screen.fill((255, 255, 255))
+
+    screen.blit(ground_scaled, (ground_x1, 548))
+    screen.blit(ground_scaled, (ground_x2, 548))
+  
     score_str = str(score_time).zfill(5)
     for i, num in enumerate(score_str):
         exec(f"dig{i+1} = int(num)")
@@ -127,5 +150,6 @@ while running:
 
     pygame.display.flip()
     clock.tick(60)
+
 
 pygame.quit()
