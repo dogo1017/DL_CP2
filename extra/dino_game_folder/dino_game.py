@@ -22,11 +22,14 @@ def load_image(name, scale=None):
         surf.fill((255, 0, 0))
         return surf
 
-small_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
-large_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
-ground = load_image('DL_CP2/extra/dino_game_folder/ground.png')
-font_imgs = [load_image(f'DL_CP2/extra/dino_game_folder/{i}.png') for i in range(0, 10)]
-hi_img = load_image('DL_CP2/extra/dino_game_folder/hi.png')
+jump = pygame.mixer.Sound('extra/dino_game_folder/jump.mp3') 
+point = pygame.mixer.Sound('extra/dino_game_folder/point.mp3')
+
+small_cacti = [load_image(f'extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
+large_cacti = [load_image(f'extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
+ground = load_image('extra/dino_game_folder/ground.png')
+font_imgs = [load_image(f'extra/dino_game_folder/{i}.png') for i in range(0, 10)]
+hi_img = load_image('extra/dino_game_folder/hi.png')
 
 use_image = False
 image_surface_standing = None
@@ -35,11 +38,11 @@ image_surface_run2 = None
 current_image = None
 
 try:
-    image_surface_standing = load_image('DL_CP2/extra/dino_game_folder/standing_dino.jpg', (player.width, player.height))
-    image_surface_run1 = load_image('DL_CP2/extra/dino_game_folder/running1.png', (player.width, player.height))
-    image_surface_run2 = load_image('DL_CP2/extra/dino_game_folder/running2.png', (player.width, player.height))
-    image_surface_duck1 = load_image('DL_CP2/extra/dino_game_folder/duck_left.webp', (59, 30))
-    image_surface_duck2 = load_image('DL_CP2/extra/dino_game_folder/duck_right.webp', (59, 30))
+    image_surface_standing = load_image('extra/dino_game_folder/standing_dino.jpg', (player.width, player.height))
+    image_surface_run1 = load_image('extra/dino_game_folder/running1.png', (player.width, player.height))
+    image_surface_run2 = load_image('extra/dino_game_folder/running2.png', (player.width, player.height))
+    image_surface_duck1 = load_image('extra/dino_game_folder/duck_left.webp', (59, 30))
+    image_surface_duck2 = load_image('extra/dino_game_folder/duck_right.webp', (59, 30))
     current_image = image_surface_standing
     use_image = True
 except:
@@ -135,11 +138,13 @@ while running:
             if event.key in [pygame.K_SPACE, pygame.K_UP]:
                 if not game_started and not first_jump_made and player.y >= ground_y:
                     velocity_y = -10.5
+                    jump.play()
                     first_jump_made = True
                     if use_image:
                         current_image = image_surface_standing
                 elif game_started and player.y >= ground_y:
                     velocity_y = -10.5
+                    jump.play()  
                     if use_image:
                         current_image = image_surface_standing
             elif event.key == pygame.K_DOWN:
@@ -183,6 +188,9 @@ while running:
                 current_image = image_surface_run1
 
     if game_started:
+        if score_time % 100 == 0:
+            if score_time != 0:
+                point.play()
         if speed < 13:
             speed += 0.005
         
