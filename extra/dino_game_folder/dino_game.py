@@ -22,14 +22,14 @@ def load_image(name, scale=None):
         surf.fill((255, 0, 0))
         return surf
 
-jump = pygame.mixer.Sound('extra/dino_game_folder/jump.mp3') 
-point = pygame.mixer.Sound('extra/dino_game_folder/point.mp3')
+jump = pygame.mixer.Sound('DL_CP2/extra/dino_game_folder/jump.mp3') 
+point = pygame.mixer.Sound('DL_CP2/extra/dino_game_folder/point.mp3')
 
-small_cacti = [load_image(f'extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
-large_cacti = [load_image(f'extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
-ground = load_image('extra/dino_game_folder/ground.png')
-font_imgs = [load_image(f'extra/dino_game_folder/{i}.png') for i in range(0, 10)]
-hi_img = load_image('extra/dino_game_folder/hi.png')
+small_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
+large_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
+ground = load_image('DL_CP2/extra/dino_game_folder/ground.png')
+font_imgs = [load_image(f'DL_CP2/extra/dino_game_folder/{i}.png') for i in range(0, 10)]
+hi_img = load_image('DL_CP2/extra/dino_game_folder/hi.png')
 
 use_image = False
 image_surface_standing = None
@@ -38,11 +38,11 @@ image_surface_run2 = None
 current_image = None
 
 try:
-    image_surface_standing = load_image('extra/dino_game_folder/standing_dino.jpg', (player.width, player.height))
-    image_surface_run1 = load_image('extra/dino_game_folder/running1.png', (player.width, player.height))
-    image_surface_run2 = load_image('extra/dino_game_folder/running2.png', (player.width, player.height))
-    image_surface_duck1 = load_image('extra/dino_game_folder/duck_left.webp', (59, 30))
-    image_surface_duck2 = load_image('extra/dino_game_folder/duck_right.webp', (59, 30))
+    image_surface_standing = load_image('DL_CP2/extra/dino_game_folder/standing_dino.jpg', (player.width, player.height))
+    image_surface_run1 = load_image('DL_CP2/extra/dino_game_folder/running1.png', (player.width, player.height))
+    image_surface_run2 = load_image('DL_CP2/extra/dino_game_folder/running2.png', (player.width, player.height))
+    image_surface_duck1 = load_image('DL_CP2/extra/dino_game_folder/duck_left.webp', (59, 30))
+    image_surface_duck2 = load_image('DL_CP2/extra/dino_game_folder/duck_right.webp', (59, 30))
     current_image = image_surface_standing
     use_image = True
 except:
