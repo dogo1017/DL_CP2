@@ -22,6 +22,9 @@ def load_image(name, scale=None):
         surf.fill((255, 0, 0))
         return surf
 
+jump = pygame.mixer.Sound('DL_CP2/extra/dino_game_folder/jump.mp3') 
+point = pygame.mixer.Sound('DL_CP2/extra/dino_game_folder/point.mp3')
+
 small_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/small{i}.png') for i in range(1, 7)]
 large_cacti = [load_image(f'DL_CP2/extra/dino_game_folder/large{i}.png') for i in range(1, 7)]
 ground = load_image('DL_CP2/extra/dino_game_folder/ground.png')
@@ -135,11 +138,13 @@ while running:
             if event.key in [pygame.K_SPACE, pygame.K_UP]:
                 if not game_started and not first_jump_made and player.y >= ground_y:
                     velocity_y = -10.5
+                    jump.play()
                     first_jump_made = True
                     if use_image:
                         current_image = image_surface_standing
                 elif game_started and player.y >= ground_y:
                     velocity_y = -10.5
+                    jump.play()  
                     if use_image:
                         current_image = image_surface_standing
             elif event.key == pygame.K_DOWN:
@@ -183,6 +188,9 @@ while running:
                 current_image = image_surface_run1
 
     if game_started:
+        if score_time % 100 == 0:
+            if score_time != 0:
+                point.play()
         if speed < 13:
             speed += 0.005
         
