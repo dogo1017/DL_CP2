@@ -70,8 +70,13 @@ def main_menu():
     ui.color("yellow")
     ui.write("Fractal Generator", align="center", font=("Arial", 22, "bold"))
     add_button(0, 40, 200, 50, "Generate", fractal_select)
-    add_button(0, -40, 200, 50, "Exit", sys.exit)
+    add_button(0, -30, 200, 50, "Settings", setting_screen)
+    add_button(0, -100, 200, 50, "Exit", sys.exit)
     screen.update()
+
+
+def setting_screen():
+    clear()
 
 def fractal_select():
     clear()
