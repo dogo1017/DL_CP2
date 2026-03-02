@@ -21,7 +21,7 @@ settings = {
     "recursion": 4,
     "colors": ["purple", "black"],
     "size": 150,
-    "snowflake_shape": "triangle",  # for koch snowflake base shape
+    "snowflake_shape": "triangle",
 }
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple", "black", "white", "pink", "cyan"]
@@ -80,8 +80,8 @@ def fractal_select():
     ui.write("Pick a fractal:", align="center", font=("Arial", 16, "bold"))
 
     add_button(0, 130, 250, 45, "Sierpinski Triangle", lambda: pick_fractal("sierpinski"))
-    add_button(0,  60, 250, 45, "Koch Snowflake",      lambda: pick_fractal("koch"))
-    add_button(0, -10, 250, 45, "Fractal Tree",        lambda: pick_fractal("tree"))
+    add_button(0, 60, 250, 45, "Koch Snowflake", lambda: pick_fractal("koch"))
+    add_button(0, -10, 250, 45, "Fractal Tree", lambda: pick_fractal("tree"))
 
     add_button(0, -200, 150, 40, "Back", main_menu)
     screen.update()
@@ -104,9 +104,8 @@ def customize():
     ui.up(); ui.goto(-200, 55)
     ui.write(f"Size: {settings['size']}", font=("Arial", 13, "normal"))
     add_button(-60, 10, 80, 35, "smaller", lambda: change_size(-30))
-    add_button( 60, 10, 80, 35, "bigger",  lambda: change_size(30))
+    add_button( 60, 10, 80, 35, "bigger", lambda: change_size(30))
 
-    # size preview box
     ui.up()
     ui.color("yellow")
     s = settings["size"]
@@ -117,8 +116,6 @@ def customize():
     ui.up()
     ui.goto(260, -s/2 - 15)
     ui.write("size preview", align="center", font=("Arial", 9, "normal"))
-
-    # koch shape picker (only show if koch selected)
     if settings["fractal"] == "koch":
         ui.up(); ui.goto(-200, -45)
         ui.color("yellow")
@@ -127,7 +124,6 @@ def customize():
             active = settings["snowflake_shape"] == shape
             add_button(-130 + i*100, -85, 90, 32, shape, make_shape_picker(shape), highlight=active)
 
-    # colors
     color_y_start = -130 if settings["fractal"] == "koch" else -60
     ui.up(); ui.goto(-200, color_y_start)
     ui.color("yellow")
@@ -205,7 +201,6 @@ def draw_sierpinski(t, pts, depth, max_depth, colors):
         draw_sierpinski(t, [pts[1], m01, m12], depth-1, max_depth, colors)
         draw_sierpinski(t, [pts[2], m02, m12], depth-1, max_depth, colors)
 
-# Koch snowflake — draw one side recursively
 def koch_side(t, depth, length, colors, depth_level):
     if depth == 0:
         if colors:
@@ -234,7 +229,6 @@ def draw_koch(t, size, depth, colors, shape):
 
     length = size * 1.5
 
-    # figure out starting position so shape is centered
     r = length / (2 * math.sin(math.pi / sides))
     t.up()
     t.goto(0, -r * 0.5)
@@ -244,7 +238,6 @@ def draw_koch(t, size, depth, colors, shape):
         koch_side(t, depth, length, colors, 0)
         t.right(angle)
 
-# Fractal tree
 def draw_tree(t, x, y, angle, length, depth, colors):
     if depth == 0:
         return
