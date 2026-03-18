@@ -36,7 +36,6 @@ def main():
 
             ascii_frame = frame_to_ascii(frame, cols=os.get_terminal_size().columns)
             print("\033[H" + ascii_frame, end="") 
-            
             time.sleep(0.03)
             
     except KeyboardInterrupt:

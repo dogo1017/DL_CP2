@@ -1,0 +1,19 @@
+# Netscape HTTP Cookie File
+curl ^"https://www.youtube.com/^" ^
+  -H ^"Referer: https://www.youtube.com/^" ^
+  -H ^"Upgrade-Insecure-Requests: 1^" ^
+  -H ^"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36^" ^
+  -H ^"device-memory: 8^" ^
+  -H ^"sec-ch-dpr: 1^" ^
+  -H ^"sec-ch-ua: ^\^"Chromium^\^";v=^\^"146^\^", ^\^"Not-A.Brand^\^";v=^\^"24^\^", ^\^"Google Chrome^\^";v=^\^"146^\^"^" ^
+  -H ^"sec-ch-ua-arch: ^\^"x86^\^"^" ^
+  -H ^"sec-ch-ua-bitness: ^\^"64^\^"^" ^
+  -H ^"sec-ch-ua-form-factors: ^\^"Desktop^\^"^" ^
+  -H ^"sec-ch-ua-full-version: ^\^"146.0.7680.80^\^"^" ^
+  -H ^"sec-ch-ua-full-version-list: ^\^"Chromium^\^";v=^\^"146.0.7680.80^\^", ^\^"Not-A.Brand^\^";v=^\^"24.0.0.0^\^", ^\^"Google Chrome^\^";v=^\^"146.0.7680.80^\^"^" ^
+  -H ^"sec-ch-ua-mobile: ?0^" ^
+  -H ^"sec-ch-ua-model: ^\^"^\^"^" ^
+  -H ^"sec-ch-ua-platform: ^\^"Windows^\^"^" ^
+  -H ^"sec-ch-ua-platform-version: ^\^"19.0.0^\^"^" ^
+  -H ^"sec-ch-ua-wow64: ?0^" ^
+  -H ^"sec-ch-viewport-width: 443^"
