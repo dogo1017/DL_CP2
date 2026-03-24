@@ -15,7 +15,7 @@ except:
         pass
 
 def main():
-    user_inp = menu_input(menu.create_menu(line_count), [1,2,3,4,5,6,7])
+    user_inp = menu.menu_input(menu.create_menu(line_count), [1,2,3,4,5,6,7])
     if user_inp == 1:
         create_shapes.create_shape()
 main()
