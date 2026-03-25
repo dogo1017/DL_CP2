@@ -1,21 +1,41 @@
-#DL 1st, main 
-import shapes
+#DL main.py
 import menu
 import create_shapes
 
-try:
-    shape_count = 0
-    with open("individual_projects/geometry_calculator/docs/shapes.csv", 'r') as f:
-        shapes = [line.strip() for line in f if line.strip()]
-        line_count = len(shapes)
-            
-except:
-    line_count = 0
-    with open("individual_projects/geometry_calculator/docs/shapes.csv", 'w') as f:
-        pass
+# Holds all the shape objects the user creates during the session
+shape_list = []
 
+
+# Main loop - keeps showing the menu and running the chosen action
+# until the user chooses Quit
 def main():
-    user_inp = menu.menu_input(menu.create_menu(line_count), [1,2,3,4,5,6,7])
-    if user_inp == 1:
-        create_shapes.create_shape()
+    while True:
+        choice = menu.show_main_menu(shape_list)
+
+        if choice == '1':
+            # create_shape returns None if the user cancels, so only append if we got something
+            new_shape = create_shapes.create_shape()
+            if new_shape is not None:
+                shape_list.append(new_shape)
+
+        elif choice == '2':
+            menu.view_all(shape_list)
+
+        elif choice == '3':
+            menu.select_shape(shape_list)
+
+        elif choice == '4':
+            menu.compare_shapes(shape_list)
+
+        elif choice == '5':
+            menu.sort_shapes(shape_list)
+
+        elif choice == '6':
+            menu.formula_guide()
+
+        elif choice == '7':
+            print("Goodbye!")
+            break
+
+
 main()
