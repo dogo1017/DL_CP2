@@ -1,0 +1,452 @@
+prompt_text,category
+"What is 15 percent of 200?",math
+"Calculate the square root of 144",math
+"Solve for x: 2x + 5 = 15",math
+"What is 50 divided by 2?",math
+"Add 45 and 90",math
+"Subtract 10 from 100",math
+"What is the sum of 5 and 10?",math
+"Multiply 12 by 12",math
+"What is the area of a circle with radius 5?",math
+"How much is 1000 minus 342?",math
+"Convert 50 kilometers to miles",math
+"What is the value of pi?",math
+"give me a summary of the Eiffel Tower",summary
+"Tell me about Albert Einstein from Wikipedia",summary
+"Summarize the history of the Roman Empire",summary
+"Who was Napoleon Bonaparte?",summary
+"Search Wikipedia for Quantum Physics",summary
+"What is the capital of France?",summary
+"Explain the process of photosynthesis",summary
+"Summarize this link: https://en.wikipedia.org",summary
+"Look up the Great Wall of China",summary
+"summarize ://www.bbc.com",summary
+"Briefly explain the Big Bang theory",summary
+"Tell me about the moon landing",summary
+"Write a python script to print hello world",code
+"How do I make a list in Javascript?",code
+"Create a C++ function for sorting arrays",code
+"Write a SQL query to select all users",code
+"Show me an example of a CSS flexbox",code
+"How to use a for loop in Java?",code
+"Write a bash script to move files",code
+"Generate a React component for a button",code
+"What is the syntax for a dictionary in Python?",code
+"How to define a class in Ruby?",code
+"HTML code for a basic table",code
+"Write a function to calculate Fibonacci in Go",code
+"How do I use pandas to read a csv?",code
+"Code for a simple login form",code
+"What is the derivative of x squared?",math
+"integral of sin(x)",math
+"Find the median of this list: 1, 2, 5, 8, 10",math
+"wikipedia search for George Washington",summary
+"get summary of https://www.nytimes.com",summary
+"research the industrial revolution",summary
+"python code for a web scraper",code
+"how to declare a variable in swift",code
+"write a rust function to parse json",code
+"what is 2 to the power of 8?",math
+"summarize the plot of Hamlet",summary
+"C# code for connecting to a database",code
+"What is the square root of 169?",math
+"Calculate the volume of a sphere with radius 3",math
+"Solve 3x - 7 = 14",math
+"What is the sine of 90 degrees?",math
+"Convert 100 Fahrenheit to Celsius",math
+"What is 12 percent of 500?",math
+"Find the average of 10, 20, and 30",math
+"What is the remainder of 100 divided by 7?",math
+"Multiply 25 by 4",math
+"Subtract 450 from 1000",math
+"What is the value of 2 to the power of 10?",math
+"Calculate the hypotenuse of a triangle with sides 3 and 4",math
+"How many minutes are in 3 days?",math
+"What is the prime factorization of 60?",math
+"Solve for y: y/4 = 12",math
+"What is 0.5 times 0.2?",math
+"Calculate the perimeter of a rectangle",math
+"summarize the biography of Steve Jobs",summary
+"Tell me about the history of the internet",summary
+"Who wrote the Magna Carta?",summary
+"Search Wikipedia for the French Revolution",summary
+"Give me a summary of the Milky Way galaxy",summary
+"Explain the theory of relativity briefly",summary
+"What is the summary of the book 1984?",summary
+"Look up the origins of Jazz music",summary
+"Summarize the current news on www.cnn.com",summary
+"Provide a brief overview of the Renaissance",summary
+"Tell me about the life of Marie Curie",summary
+"Summarize the main events of World War II",summary
+"Get info about the Sahara Desert from Wikipedia",summary
+"Explain how a steam engine works",summary
+"Summarize this article: https://www.theguardian.com",summary
+"Who discovered penicillin?",summary
+"Briefly describe the water cycle",summary
+"Write a Python script to scrape a website",code
+"How do I create a dictionary in C#?",code
+"Show me a PHP script for a contact form",code
+"How to use map function in Javascript?",code
+"Write a SQL command to update a row",code
+"Create a simple HTML boilerplate",code
+"How to center a div in CSS?",code
+"Write a Java method to reverse a string",code
+"Show me a TypeScript interface example",code
+"How to install a library using pip?",code
+"Write a C++ program for a calculator",code
+"Explain the syntax for a list comprehension in Python",code
+"How to handle errors in Node.js?",code
+"Create a function in Go to sort a list",code
+"How do I use media queries in CSS?",code
+"Write a bash script to backup a folder",code
+"Calculate the factorial of 5",math
+"What is the median of 12, 15, 22, 29, 35?",math
+"Divide 144 by 12",math
+"What is 3/4 as a decimal?",math
+"Solve for x: x squared equals 64",math
+"How many sides does a heptagon have?",math
+"What is the probability of flipping heads twice?",math
+"Calculate the interest on $500 at 5 percent",math
+"Convert 100 meters to feet",math
+"What is the cube root of 27?",math
+"Subtract 19 from 82",math
+"What is the sum of the first ten prime numbers?",math
+"Find the slope of a line between (0,0) and (2,4)",math
+"How many seconds are in two hours?",math
+"What is 15% of 80?",math
+"What is the diameter of a circle with circumference 31.4?",math
+"Multiply 0.25 by 100",math
+"Summarize the plot of Inception",summary
+"Tell me about the history of Tokyo",summary
+"Who was the first person to walk on the moon?",summary
+"Give me a summary of the periodic table",summary
+"Search Wikipedia for the Roman Colosseum",summary
+"Explain how a black hole forms",summary
+"What is the summary of the movie Parasite?",summary
+"Look up the biography of Malala Yousafzai",summary
+"Summarize the content on https://www.nature.com",summary
+"Briefly explain the laws of thermodynamics",summary
+"Tell me about the Ming Dynasty",summary
+"Summarize the main themes of Macbeth",summary
+"Get info about the Amazon Rainforest",summary
+"Explain the importance of the Magna Carta",summary
+"Summarize the Wikipedia entry for Mars",summary
+"Who invented the lightbulb?",summary
+"Briefly describe the functions of the human heart",summary
+"Summarize the history of the Olympic Games",summary
+"How to use a switch statement in Swift?",code
+"Write a Python script to merge two CSVs",code
+"Show me a SQL query to join two tables",code
+"How to create a flex container in CSS?",code
+"Write a regex to validate an email address",code
+"Show me a boilerplate for an Express.js server",code
+"How do I use async/await in Javascript?",code
+"Write a C++ class for a bank account",code
+"How to define a variable in Kotlin?",code
+"Create a simple React hook for a counter",code
+"Write a bash script to check if a file exists",code
+"How to use a dictionary in C++?",code
+"Write a function to find the max value in an array in Java",code
+"Show me how to use the map function in Python",code
+"How to add a border to a table in HTML?",code
+"What is the total of 55, 22, and 11?",math
+"Calculate the area of a triangle with base 10 and height 5",math
+"How many degrees are in a hexagon?",math
+"What is 7 raised to the 3rd power?",math
+"Solve the equation 5x = 100",math
+"Convert 5 kilograms to pounds",math
+"What is the sine of 45 degrees?",math
+"Find the volume of a cylinder",math
+"What is 1/8 as a percentage?",math
+"Divide 1000 by 25",math
+"What is the difference between 95 and 47?",math
+"Calculate the sales tax on $45 at 8%",math
+"What is the square root of 225?",math
+"How many centimeters are in a mile?",math
+"What is the value of 10 factorial?",math
+"Subtract 0.75 from 2",math
+"What is the mean of 4, 8, and 12?",math
+"Summarize the life of Leonardo da Vinci",summary
+"Tell me about the Great Depression",summary
+"Who was the first president of the United States?",summary
+"Give me a summary of the Industrial Revolution",summary
+"Search Wikipedia for the Hubble Space Telescope",summary
+"Explain the basics of quantum entanglement",summary
+"What is the summary of the book To Kill a Mockingbird?",summary
+"Look up the history of the samurai",summary
+"Summarize the homepage of https://www.nasa.gov",summary
+"Briefly explain the theory of evolution",summary
+"Tell me about the Ottoman Empire",summary
+"Summarize the plot of the movie Interstellar",summary
+"Get info about the Eiffel Tower's construction",summary
+"Explain how a refrigerator works",summary
+"Summarize the Wikipedia page for the Pyramids of Giza",summary
+"Who discovered gravity?",summary
+"Briefly describe the layers of the Earth",summary
+"Summarize the impact of the printing press",summary
+"Write a Python script to sort a dictionary by value",code
+"How do I create a ghost button in CSS?",code
+"Show me a SQL query to delete duplicate rows",code
+"How to use a ternary operator in Javascript?",code
+"Write a regex to extract phone numbers",code
+"Show me a basic setup for a Django project",code
+"How do I use promises in Javascript?",code
+"Write a C++ function to find a prime number",code
+"How to declare a constant in Go?",code
+"Create a simple Vue.js component",code
+"Write a bash script to rename all .txt files to .md",code
+"How to use a set in Python?",code
+"Write a Java function to check for a palindrome",code
+"Show me how to use the filter function in Javascript",code
+"How to make a responsive image in HTML/CSS?",code
+"What is the median of 4, 15, 2, and 10?",math
+"Calculate the circumference of a circle with a diameter of 10",math
+"How many degrees are in a pentagon?",math
+"What is 9 to the power of 4?",math
+"Solve the linear equation 7x + 3 = 24",math
+"Convert 250 milliliters to liters",math
+"What is the tangent of 45 degrees?",math
+"Find the surface area of a cube with side 4",math
+"What is 3/5 as a percentage?",math
+"Divide 1500 by 60",math
+"What is the difference between 1024 and 512?",math
+"Calculate a 20% tip on a 85 dollar bill",math
+"What is the square root of 625?",math
+"How many inches are in 2.5 meters?",math
+"What is the absolute value of negative 55?",math
+"Subtract 12.5 from 100",math
+"What is the mode of 1, 2, 2, 3, 4?",math
+"Summarize the biography of Nikola Tesla",summary
+"Tell me about the history of the Silk Road",summary
+"Who was the first woman to win a Nobel Prize?",summary
+"Give me a summary of the French Revolution",summary
+"Search Wikipedia for the James Webb Telescope",summary
+"Explain the basics of the greenhouse effect",summary
+"What is the summary of the book The Great Gatsby?",summary
+"Look up the history of the Aztecs",summary
+"Summarize the homepage of https://www.wikipedia.org",summary
+"Briefly explain the theory of special relativity",summary
+"Tell me about the Byzantine Empire",summary
+"Summarize the plot of the movie The Matrix",summary
+"Get info about the Colosseum in Rome",summary
+"Explain how a jet engine works",summary
+"Summarize the Wikipedia page for the Taj Mahal",summary
+"Who discovered the structure of DNA?",summary
+"Briefly describe the water cycle steps",summary
+"Summarize the impact of the steam engine",summary
+"Write a Python script to find the longest string in a list",code
+"How do I create a navigation bar in CSS?",code
+"Show me a SQL query to find the maximum value in a column",code
+"How to use the spread operator in Javascript?",code
+"Write a regex to match a hex color code",code
+"Show me a basic setup for a Flask application",code
+"How do I use try-except blocks in Python?",code
+"Write a C++ function to swap two numbers",code
+"How to declare an array in Swift?",code
+"Create a simple React component for a modal",code
+"Write a bash script to count lines in a file",code
+"How to use a list comprehension in Python?",code
+"Write a Java function to find the factorial of a number",code
+"Show me how to use the reduce function in Javascript",code
+"How to create a dropdown menu in HTML?",code
+"What is 14 times 14?",math
+"Calculate the volume of a cone with radius 4 and height 9",math
+"Solve for x: 4x - 12 = 28",math
+"What is the cosine of 0 degrees?",math
+"Convert 10 nautical miles to kilometers",math
+"What is 33 percent of 900?",math
+"Find the geometric mean of 4 and 16",math
+"What is the remainder when 85 is divided by 9?",math
+"Multiply 13 by 7",math
+"Subtract 15.5 from 50",math
+"What is the value of 5 cubed?",math
+"Calculate the diagonal of a square with side 10",math
+"How many hours are in a leap year?",math
+"What is the prime factorization of 100?",math
+"Solve for z: 2z + 10 = 50",math
+"What is 0.125 as a fraction?",math
+"Calculate the surface area of a sphere",math
+"What is the square root of 900?",math
+"Find the area of a trapezoid",math
+"What is 1000 divided by 8?",math
+"Subtract 99 from 1001",math
+"What is the log base 10 of 100?",math
+"How many millimeters are in 2 meters?",math
+"What is the sum of angles in a triangle?",math
+"Calculate a 15% discount on $120",math
+"What is 2/3 of 150?",math
+"Find the midpoint between (1,2) and (5,10)",math
+"How many fluid ounces in a gallon?",math
+"What is the hypotenuse of a 5-12-13 triangle?",math
+"Divide 500 by 0.5",math
+"What is the absolute value of -100?",math
+"Convert 500 grams to ounces",math
+"What is the power of 3 to the 5?",math
+"Solve 10 + 5x = 35",math
+"What is the area of a parallelogram?",math
+"summarize the life of Nelson Mandela",summary
+"Tell me about the history of the samurai",summary
+"Who was the architect of the Burj Khalifa?",summary
+"Give me a summary of the Cold War",summary
+"Search Wikipedia for the International Space Station",summary
+"Explain the basics of how a battery works",summary
+"What is the summary of the book Brave New World?",summary
+"Look up the history of the Vikings",summary
+"Summarize the content on https://www.nationalgeographic.com",summary
+"Briefly explain the theory of plate tectonics",summary
+"Tell me about the Maya civilization",summary
+"Summarize the plot of the movie Pulp Fiction",summary
+"Get info about the Statue of Liberty's history",summary
+"Explain the process of nuclear fission",summary
+"Summarize the Wikipedia page for the Great Barrier Reef",summary
+"Who discovered the planet Pluto?",summary
+"Briefly describe the functions of the liver",summary
+"Summarize the impact of the internet on society",summary
+"Tell me about the origin of the Olympic games",summary
+"Explain the significance of the Magna Carta",summary
+"Search Wikipedia for the history of London",summary
+"Give me a summary of the Mars Rover mission",summary
+"Who wrote the play Romeo and Juliet?",summary
+"Look up the biography of Alan Turing",summary
+"Summarize the latest news on https://www.reuters.com",summary
+"Briefly describe how a camera works",summary
+"Summarize the Wikipedia article for the Moon",summary
+"Explain the concept of supply and demand",summary
+"What happened during the Boston Tea Party?",summary
+"Summarize the life of Alexander the Great",summary
+"Write a Python script to plot a bar chart with matplotlib",code
+"How do I create a centered navbar in Bootstrap?",code
+"Show me a SQL query to group by category",code
+"How to use the fetch API in Javascript?",code
+"Write a regex to find all dates in a text",code
+"Show me a basic setup for a React Native app",code
+"How do I use a while loop in Python?",code
+"Write a C++ function to find the greatest common divisor",code
+"How to declare a optional variable in Swift?",code
+"Create a simple Express.js middleware",code
+"Write a bash script to monitor CPU usage",code
+"How to use a dictionary in Java (HashMap)?",code
+"Write a Python function to check for an anagram",code
+"Show me how to use the find function in Javascript",code
+"How to add a video background in HTML/CSS?",code
+"Write a SQL query to find the second highest salary",code
+"How to use pandas to merge two dataframes?",code
+"Write a C# script to move a player in Unity",code
+"How to create a gradient background in CSS?",code
+"Write a Python script to send an email",code
+"How to use the useEffect hook in React?",code
+"Write a Java class for a library book",code
+"How to use list.append() in Python?",code
+"Write a bash script to delete empty files",code
+"Show me a PHP example for session handling",code
+"How to create a checkbox in HTML?",code
+"Write a Ruby script to scrape a webpage",code
+"How do I use a lambda function in Python?",code
+"Write a SQL command to create a table",code
+"How to use local storage in Javascript?",code
+"Write a C++ program for a binary search",code
+"How to style a link on hover in CSS?",code
+"Write a Python function to generate a random password",code
+"How to use a try-catch block in C#?",code
+"Write a Javascript function to capitalize a string",code
+"How much is 12 squared?",math
+"What is the derivative of 3x^3?",math
+"Calculate the volume of a rectangular prism",math
+"What is 15 percent of 1500?",math
+"Solve 5x + 10 = 40",math
+"Convert 5 miles to feet",math
+"What is the tangent of 0?",math
+"Find the median of 3, 7, 9, 15, 20",math
+"What is 4/5 as a decimal?",math
+"Divide 120 by 6",math
+"What is the difference between 500 and 275?",math
+"Calculate a 10% tax on $250",math
+"What is the square root of 400?",math
+"How many meters are in 5 kilometers?",math
+"What is the value of 4 factorial?",math
+"Subtract 18 from 60",math
+"What is the average of 50, 60, and 70?",math
+"What is 2 to the power of 5?",math
+"Solve for y: 3y = 27",math
+"What is the area of a square with side 8?",math
+"Find the perimeter of a triangle with sides 5, 5, 5",math
+"What is 100 times 1.5?",math
+"How many minutes are in 5 hours?",math
+"What is 0.25 plus 0.75?",math
+"Calculate the radius of a circle with diameter 20",math
+"What is the sum of 123 and 456?",math
+"Subtract 99 from 500",math
+"What is 1/3 of 90?",math
+"Multiply 15 by 3",math
+"What is the log of 1000 base 10?",math
+"What is 7 times 8?",math
+"Find the range of 10, 20, 30, 40",math
+"What is the cube of 4?",math
+"summarize the biography of Winston Churchill",summary
+"Tell me about the history of the Great Wall of China",summary
+"Who was the first person to fly solo across the Atlantic?",summary
+"Give me a summary of the American Civil War",summary
+"Search Wikipedia for the history of the Taj Mahal",summary
+"Explain how a solar panel works",summary
+"What is the summary of the book 1984 by George Orwell?",summary
+"Look up the history of the Aztecs",summary
+"Summarize the homepage of https://www.theverge.com",summary
+"Briefly explain the theory of gravity",summary
+"Tell me about the Roman Empire's fall",summary
+"Summarize the plot of the movie Gladiator",summary
+"Get info about the Colosseum in Rome",summary
+"Explain the process of evaporation",summary
+"Summarize the Wikipedia page for the Hubble Telescope",summary
+"Who discovered the North Pole?",summary
+"Briefly describe the functions of the kidney",summary
+"Summarize the history of the internet",summary
+"Tell me about the origin of the Olympic Games",summary
+"Explain the significance of the Magna Carta",summary
+"Search Wikipedia for the history of Paris",summary
+"Give me a summary of the Apollo 11 mission",summary
+"Who wrote the book Moby Dick?",summary
+"Look up the biography of Ada Lovelace",summary
+"Summarize the latest news on https://www.aljazeera.com",summary
+"Briefly describe how an airplane flies",summary
+"Summarize the Wikipedia article for the Sun",summary
+"Explain the concept of inflation in economics",summary
+"What was the Renaissance period?",summary
+"Summarize the life of Gandhi",summary
+"Wiki search for Black Holes",summary
+"Explain the French Revolution in two sentences",summary
+"Tell me about the Vikings",summary
+"Who was Mozart?",summary
+"What's the summary of the movie Joker?",summary
+"Tell me about the history of Nintendo",summary
+"Write a Python script to filter a list of strings",code
+"How do I create a modal in vanilla Javascript?",code
+"Show me a SQL query to find the average value",code
+"How to use the axios library in Javascript?",code
+"Write a regex to find hashtags in a tweet",code
+"Show me a basic setup for a Node.js project",code
+"How do I use a for-in loop in Python?",code
+"Write a C++ function for a bubble sort",code
+"How to declare a variable in Rust?",code
+"Create a simple React state using useState",code
+"Write a bash script to zip a folder",code
+"How to use a dictionary in Swift?",code
+"Write a Python function to check for a prime number",code
+"Show me how to use the sort function in Javascript",code
+"How to add a hover effect to a button in CSS?",code
+"Write a SQL query to count total rows in a table",code
+"How to use pandas to drop a column?",code
+"Write a C# script for a simple timer in Unity",code
+"How to create a grid layout in CSS?",code
+"Write a Python script to read a JSON file",code
+"How to use the useMemo hook in React?",code
+"Write a Java class for a car object",code
+"How to use list.pop() in Python?",code
+"Write a bash script to print hello world",code
+"Show me a PHP example for connecting to a database",code
+"How to create a radio button in HTML?",code
+"Write a Ruby script to print the current date",code
+"How do I use a list comprehension in Python?",code
+"Write a SQL command to drop a table",code
+"How to use session storage in Javascript?",code
+"Write a C++ program to find the largest number",code
+"How to change text color on click in Javascript?",code

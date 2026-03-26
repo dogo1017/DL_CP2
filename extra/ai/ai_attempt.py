@@ -15,7 +15,7 @@ def train_classifier():
     # Load your training data from the CSV you are building
     # Make sure 'prompts.csv' is in the same directory as this script
     try:
-        df = pd.read_csv('prompts.csv')
+        df = pd.read_csv('extra/ai/promts.csv')
     except FileNotFoundError:
         print("Error: prompts.csv not found. Please create your spreadsheet first.")
         # Create a dummy dataframe for demonstration if file missing

@@ -40,6 +40,7 @@ while True:
     if keys[pygame.K_d]:
         grav_dir[0], grav_dir[1] = 1, 0
 
+
     x_vel += grav_dir[0] * gravity
     y_vel += grav_dir[1] * gravity
 

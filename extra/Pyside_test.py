@@ -12,3 +12,4 @@ class Window(QWidget):
         self.anim.setEndValue(QPoint(400, 400))
         self.anim.setDuration(1500)
         self.anim.start()
+
