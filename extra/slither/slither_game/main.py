@@ -5,6 +5,7 @@ import subprocess
 import site
 import importlib
 import json
+import math
 
 def install_and_import(package_name, import_name=None):
     if import_name is None:
@@ -47,7 +48,6 @@ async def main():
     BOOST_COST_RATE = 100
     INITIAL_PLAYER_RADIUS = 10
     INITIAL_LENGTH = 150
-    MAX_LENGTH = 1500
     GROWTH_SLOWDOWN_FACTOR = 0.5
     BG_COLOR = (20, 20, 20)
     MAP_SIZE = 3000
@@ -199,7 +199,7 @@ async def main():
         # Increases the player's length and score by the given mass, capped at MAX_LENGTH
         def grow(self, mass_gained):
             effective_gain = mass_gained * GROWTH_SLOWDOWN_FACTOR
-            self.length = min(MAX_LENGTH, self.length + effective_gain)
+            self.length = min(self.length + effective_gain)
             self.score += effective_gain
             self.update_radius()
 
@@ -510,7 +510,7 @@ async def main():
             screen.blit(font.render(f'Score: {int(local_player.score)}', True, (255, 255, 255)), (10, 10))
             total_players = len(other_players) + (1 if local_player.alive else 0)
             screen.blit(small_font.render(f'Players: {total_players}', True, (255, 255, 255)), (10, 50))
-            screen.blit(small_font.render(f'Length: {int(local_player.length)}/{MAX_LENGTH}', True, (255, 255, 255)), (10, 80))
+            screen.blit(small_font.render(f'Length: {int(local_player.length)}', True, (255, 255, 255)), (10, 80))
 
             time_since_state = pygame.time.get_ticks() - network.last_state_time
             conn_color = (255, 0, 0) if time_since_state > 2000 else (0, 255, 0)
