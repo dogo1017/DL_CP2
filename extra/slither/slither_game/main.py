@@ -294,7 +294,7 @@ async def main():
     # Shows the server address and name input screen and returns both strings, or (None, None) if cancelled
     async def show_connection_screen():
         # Set your permanent server address here
-        PERMANENT_SERVER = "abc123.ngrok-free.app" 
+        PERMANENT_SERVER = "ws://localhost:8765" 
         
         # Position the name box in the center
         name_box = pygame.Rect(SCREEN_WIDTH // 2 - 300, SCREEN_HEIGHT // 2 - 20, 600, 40)
@@ -383,7 +383,7 @@ async def main():
 
         network = NetworkManager()
 
-        server_url = f"wss://orlando-nonexplorative-undeniably.ngrok-free.dev"
+        server_url = f"ws://localhost:8765"
 
         # Show connecting screen while waiting for handshake
         connect_task = asyncio.ensure_future(network.connect(server_url, player_name, player_color))

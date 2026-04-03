@@ -3,7 +3,8 @@ import websockets
 import json
 import random
 import time
-from pyngrok import ngrok
+import os
+from datetime import datetime
 
 
 # Server Configuration
@@ -12,6 +13,12 @@ INITIAL_FOOD_COUNT = 300
 MIN_FOOD_SIZE = 5
 MAX_FOOD_SIZE = 15
 TICK_RATE = 30  # Server updates per second
+
+# Back4App Configuration
+PORT = int(os.environ.get('PORT', 8765))
+HOST = os.environ.get('HOST', '0.0.0.0')
+SERVER_URL = os.environ.get('SERVER_URL', f'ws://localhost:{PORT}')  # Set via Back4App environment variable
+
 
 class GameServer:
     def __init__(self):
@@ -113,7 +120,7 @@ class GameServer:
                 if not player['alive']:
                     break
     
-    async def handle_client(self, websocket):
+    async def handle_client(self, websocket, path):
         player_id = None
         try:
             # Wait for initial connection message
@@ -135,7 +142,8 @@ class GameServer:
                 init_message = {
                     'type': 'init',
                     'player_id': player_id,
-                    'map_size': MAP_SIZE
+                    'map_size': MAP_SIZE,
+                    'server_url': SERVER_URL
                 }
                 await websocket.send(json.dumps(init_message))
                 print(f"[SERVER] Sent init to player {player_id}: {init_message}")
@@ -241,51 +249,42 @@ class GameServer:
             
             await asyncio.sleep(1.0 / TICK_RATE)
     
-    async def start_server(self, port=8765):
+    async def start_server(self):
         print("=" * 60)
         print("SLITHER.IO MULTIPLAYER SERVER")
         print("=" * 60)
         
-        # Start ngrok tunnel
-        print("\n🔧 Starting ngrok tunnel...")
-        try:
-            ngrok.kill()
-            public_url = ngrok.connect(port, "http")
-            ngrok_address = public_url.public_url.replace("https://", "").replace("http://", "")
-            
-            print(f"✅ ngrok tunnel established!")
-            print(f"\n📡 SERVER ADDRESS: {ngrok_address}")
-            print(f"\n👥 Share this address with your friends!")
-            print(f"   They should enter: {ngrok_address}")
-            print("\n💡 This tunnel will stay active as long as this program runs.")
-            print("=" * 60)
-            print("🎮 Server is running! Waiting for players...\n")
-            
-        except Exception as e:
-            print(f"❌ Failed to start ngrok: {e}")
-            print("\n💡 Make sure you have ngrok installed:")
-            print("   pip install pyngrok")
-            return
+        print(f"\nSERVER CONFIGURATION")
+        print(f"   Host: {HOST}")
+        print(f"   Port: {PORT}")
+        print(f"   WebSocket URL: {SERVER_URL}")
+        print(f"   Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("=" * 60)
+        print("Server is running! Waiting for players...\n")
         
         # Start game state broadcast task
         broadcast_task = asyncio.create_task(self.broadcast_game_state())
         
         # Start WebSocket server
         try:
-            async with websockets.serve(self.handle_client, 'localhost', port, max_size=10**7, ping_interval=20, ping_timeout=10):
-                print(f"[SERVER] WebSocket server listening on localhost:{port}")
+            async with websockets.serve(
+                self.handle_client, 
+                HOST, 
+                PORT, 
+                max_size=10**7, 
+                ping_interval=20, 
+                ping_timeout=10
+            ):
+                print(f"[SERVER] WebSocket server listening on {HOST}:{PORT}")
                 await asyncio.Future()
         except KeyboardInterrupt:
             print("\n\n👋 Shutting down server...")
             self.running = False
-            ngrok.disconnect(public_url.public_url)
-            ngrok.kill()
             print("✅ Server stopped successfully!")
 
-if __name__ == "__main__":
-    print("\n🎮 Starting Slither.io Multiplayer Server...\n")
-    server = GameServer()
-    try:
-        asyncio.run(server.start_server())
-    except KeyboardInterrupt:
-        print("\n👋 Server stopped by user")
+print("\nStarting Slither.io Multiplayer Server...\n")
+server = GameServer()
+try:
+    asyncio.run(server.start_server())
+except KeyboardInterrupt:
+    print("\nServer stopped by user")
