@@ -120,7 +120,7 @@ class GameServer:
                 if not player['alive']:
                     break
     
-    async def handle_client(self, websocket, path):
+    async def handle_client(self, websocket):
         player_id = None
         try:
             # Wait for initial connection message
