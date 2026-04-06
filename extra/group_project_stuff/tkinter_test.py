@@ -1,131 +1,114 @@
-import tkinter as tk
-from tkinter import messagebox
+import customtkinter as ctk
 import csv
 import os
-import user_registration
-
 DB_FILE = "users.csv"
 MIN_PASSWORD_LENGTH = 5
+ctk.set_appearance_mode("Dark")
+ctk.set_default_color_theme("dark-blue")
 
-users=["hello"]
+
+def save_user(username, password):
+    with open(DB_FILE, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([username, password])
 
 def load_users():
-    print("load")
+    if not os.path.exists(DB_FILE): return {}
+    users = {}
+    with open(DB_FILE, 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if row: users[row[0]] = row[1]
+    return users
 
-def save_user(users,username, password):
-    user_registration(users,username, password)
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Personal Finance")
+        self.geometry("400x450")
+        self.wm_minsize(280,350)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
-root = tk.Tk()
-root.title("Secure Login")
-root.minsize(400, 400)
-root.configure(bg="#302B27")
-root.grid_columnconfigure(0, weight=1)
+        self.current_mode = "login"
+        self.error_labels = []
 
-frame = tk.Frame(root, bg="#302B27")
-frame.pack(expand=True)
+        self.frame = ctk.CTkFrame(self)
+        self.frame.pack(expand=True, fill="both", padx=20, pady=20)
+        self.frame.grid_columnconfigure(0, weight=1)
 
-current_mode = "login" 
-error_labels = []
+        self.render_screen()
 
-def clear_errors():
-    for label in error_labels:
-        label.destroy()
-    error_labels.clear()
+    def clear_errors(self):
+        for label in self.error_labels:
+            label.destroy()
+        self.error_labels.clear()
 
-def show_error(text, row):
-    lbl = tk.Label(frame, text=text, bg="#302B27", fg="#ff4444", font=("Arial", 8))
-    lbl.grid(row=row, column=0, pady=0)
-    error_labels.append(lbl)
+    def show_error(self, text, row):
+        lbl = ctk.CTkLabel(self.frame, text=text, text_color="#ff4444", font=("Arial", 11))
+        lbl.grid(row=row, column=0, pady=(0, 5))
+        self.error_labels.append(lbl)
 
-def on_key_press(event, placeholder):
-    if event.widget.get() == placeholder:
-        event.widget.delete(0, tk.END)
-        event.widget.config(fg="#F5F3F5")
-        if placeholder == "Password":
-            event.widget.config(show="*")
+    def toggle_mode(self):
+        self.current_mode = "signup" if self.current_mode == "login" else "login"
+        self.render_screen()
 
-def on_focusout(event, placeholder):
-    if event.widget.get() == "":
-        event.widget.insert(0, placeholder)
-        event.widget.config(fg="grey")
-        if placeholder == "Password":
-            event.widget.config(show="")
+    def handle_submit(self, user_ent, pass_ent):
+        self.clear_errors()
+        username = user_ent.get()
+        password = pass_ent.get()
+        has_error = False
 
-def on_entry_click(event, placeholder):
-    if event.widget.get() == placeholder:
-        event.widget.delete(0, tk.END)
-        event.widget.config(fg="#F5F3F5")
-        if placeholder == "Password":
-            event.widget.config(show="*")
-
-def toggle_mode():
-    global current_mode
-    current_mode = "signup" if current_mode == "login" else "login"
-    render_screen()
-
-def handle_submit(user_ent, pass_ent):
-    clear_errors()
-    username = user_ent.get()
-    password = pass_ent.get()
-    
-    has_error = False
-    if not username or username == "Username":
-        show_error("Username required", 2)
-        has_error = True
-    
-    if not password or password == "Password":
-        show_error("Password required", 4)
-        has_error = True
-    elif len(password) < MIN_PASSWORD_LENGTH:
-        show_error(f"Password must be > {MIN_PASSWORD_LENGTH} chars", 4)
-        has_error = True
+        if not username or username == "Username":
+            self.show_error("Username required", 2)
+            has_error = True
         
-    if has_error: return
+        if not password or password == "Password":
+            self.show_error("Password required", 4)
+            has_error = True
+        elif len(password) < MIN_PASSWORD_LENGTH:
+            self.show_error(f"Password must be > {MIN_PASSWORD_LENGTH} chars", 4)
+            has_error = True
 
-    users = load_users()
-    
-    if current_mode == "login":
-        if users.get(username) == password:
-            print("Logged in successfully!")
+        if has_error: return
+
+        users = load_users()
+        if self.current_mode == "login":
+            if users.get(username) == password:
+                print("Logged in successfully!")
+            else:
+                self.show_error("Invalid username or password", 5)
         else:
-            show_error("Invalid username or password", 5)
-    else:
-        if username in users:
-            show_error("Username already exists", 2)
-        else:
-            save_user(username, password)
-            toggle_mode()
+            if username in users:
+                self.show_error("Username already exists", 2)
+            else:
+                save_user(username, password)
+                self.toggle_mode()
 
-def render_screen():
-    for widget in frame.winfo_children():
-        widget.destroy()
-    clear_errors()
+    def render_screen(self):
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+        self.clear_errors()
 
-    title_text = "Login" if current_mode == "login" else "Sign Up"
-    btn_text = "Login" if current_mode == "login" else "Sign Up"
-    toggle_text = "Need an account? Sign Up" if current_mode == "login" else "Have an account? Login"
+        title_text = "Login" if self.current_mode == "login" else "Sign Up"
+        btn_text = "Login" if self.current_mode == "login" else "Sign Up"
+        toggle_text = "Need an account? Sign Up" if self.current_mode == "login" else "Have an account? Login"
 
-    tk.Label(frame, text=title_text, bg="#302B27", fg="#f5f3f5", font=("Arial", 20, "bold")).grid(column=0, row=0, pady=20)
+        ctk.CTkLabel(self.frame, text=title_text, font=("Arial", 24, "bold")).grid(row=0, column=0, pady=20)
 
-    entry_user = tk.Entry(frame, fg="grey", bg="#4a443f", insertbackground="white", relief="flat", font=("Arial", 10))
-    entry_user.insert(0, "Username")
-    entry_user.bind("<FocusIn>", lambda e: on_entry_click(e, "Username"))
-    entry_user.bind("<FocusOut>", lambda e: on_focusout(e, "Username"))
-    entry_user.grid(row=1, column=0, pady=5, ipadx=10, ipady=5)
+        entry_user = ctk.CTkEntry(self.frame, placeholder_text="Username", width=250, height=40)
+        entry_user.grid(row=1, column=0, pady=10)
 
-    entry_pass = tk.Entry(frame, fg="grey", bg="#4a443f", insertbackground="white", relief="flat", font=("Arial", 10))
-    entry_pass.insert(0, "Password")
-    entry_pass.bind("<FocusIn>", lambda e: on_entry_click(e, "Password"))
-    entry_pass.bind("<FocusOut>", lambda e: on_focusout(e, "Password"))
-    entry_pass.grid(row=3, column=0, pady=5, ipadx=10, ipady=5)
+        entry_pass = ctk.CTkEntry(self.frame, placeholder_text="Password", show="*", width=250, height=40)
+        entry_pass.grid(row=3, column=0, pady=10)
 
-    submit = tk.Button(frame, text=btn_text, bg="#6b5b4e", fg="#f5f3f5", font=("Arial", 10, "bold"), 
-                       relief="raised", width=15, command=lambda: handle_submit(entry_user, entry_pass))
-    submit.grid(row=5, column=0, pady=20)
+        submit = ctk.CTkButton(self.frame, text=btn_text, 
+                               command=lambda: self.handle_submit(entry_user, entry_pass), width=150)
+        submit.grid(row=5, column=0, pady=25)
 
-    toggle_btn = tk.Button(frame, text=toggle_text, bg="#302B27", fg="#aaa", font=("Arial", 8), 
-                           relief="flat", command=toggle_mode)
-    toggle_btn.grid(row=6, column=0)
+        toggle_btn = ctk.CTkButton(self.frame, text=toggle_text, fg_color="transparent", 
+                                   text_color="#aaa", hover=False, command=self.toggle_mode, font=("Arial", 10))
+        toggle_btn.grid(row=6, column=0)
 
-render_screen()
-root.mainloop()
+app = App()
+app.mainloop()
