@@ -1,25 +1,12 @@
 import customtkinter as ctk
 import csv
 import os
-DB_FILE = "users.csv"
+import login
+import user_registration
+DB_FILE = "extra/group_project_stuff/users.csv"
 MIN_PASSWORD_LENGTH = 5
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("dark-blue")
-
-
-def save_user(username, password):
-    with open(DB_FILE, 'a', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow([username, password])
-
-def load_users():
-    if not os.path.exists(DB_FILE): return {}
-    users = {}
-    with open(DB_FILE, 'r') as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if row: users[row[0]] = row[1]
-    return users
 
 class App(ctk.CTk):
     def __init__(self):
@@ -72,17 +59,17 @@ class App(ctk.CTk):
 
         if has_error: return
 
-        users = load_users()
+        users = user_registration.load_csv()
         if self.current_mode == "login":
-            if users.get(username) == password:
+            if login.log_in(username,password):
                 print("Logged in successfully!")
             else:
-                self.show_error("Invalid username or password", 5)
+                self.show_error("Invalid username or password", 7)
         else:
             if username in users:
                 self.show_error("Username already exists", 2)
             else:
-                save_user(username, password)
+                user_registration.save_changes(user_registration.register(user_registration.load_csv(),password,username))
                 self.toggle_mode()
 
     def render_screen(self):
