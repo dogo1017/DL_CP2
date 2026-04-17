@@ -1,7 +1,7 @@
 import requests
 
-# Ensure /test is at the end
-URL = "https://pythonanywhere.com"
+# Ensure /api/test is at the end
+URL = "https://dogo1017.pythonanywhere.com/test"
 
 try:
     response = requests.post(URL, json={"msg": "Hello!"})
@@ -12,8 +12,11 @@ try:
         print("This means the Reload failed or the WSGI file is wrong.")
     else:
         print(f"Server Response: {response.text}")
-        # Only try to parse if it's not empty
-        print("JSON Data:", response.json())
+        # Only try to parse if it's not empty and likely JSON
+        if response.headers.get('Content-Type') == 'application/json':
+            print("JSON Data:", response.json())
+        else:
+            print("Response is not JSON.")
 
 except Exception as e:
     print(f"Caught Error: {e}")
