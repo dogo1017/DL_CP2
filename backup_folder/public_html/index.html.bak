@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <title>Chat Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
-    <script src='https://meet.jit.si/external_api.js'></script>
     <style>
-        body { font-family: monospace; background: #00ff37; color: #ccc; padding: 20px; }
+        body { font-family: monospace; background: #1e1e1e; color: #ccc; padding: 20px; }
         input, button, select { background: #2e2e2e; color: #ccc; border: 1px solid #444; padding: 6px 10px; margin: 4px; }
         button { cursor: pointer; }
         button:hover { background: #3e3e3e; }
@@ -63,12 +62,6 @@
     <input id="message-input" type="text" placeholder="type a message">
     <button onclick="sendMessage()">send</button>
 </div>
-
-<div class="section">
-    <h3>Video Call</h3>
-    <div id="meet" style="height: 500px; width: 100%; background: #000;"></div>
-</div>
-
 
 <script>
     const BASE = '/api'
@@ -160,83 +153,41 @@
         })
     }
 
-    let jitsiApi = null;
-
     async function openChannel() {
-        const server_id = document.getElementById('chat-server-id').value;
-        const channel = document.getElementById('chat-channel').value;
-        if (!server_id || !channel) return;
+        const server_id = document.getElementById('chat-server-id').value
+        const channel = document.getElementById('chat-channel').value
+        if (!server_id || !channel) return
 
         if (currentServer && currentChannel) {
-            socket.emit('leave', {server_id: currentServer, channel: currentChannel});
+            socket.emit('leave', {server_id: currentServer, channel: currentChannel})
         }
 
-        currentServer = server_id;
-        currentChannel = channel;
-        socket.emit('join', {server_id, channel});
+        currentServer = server_id
+        currentChannel = channel
 
-        // Load Messages
-        const messages = await get(`/message/get/${server_id}/${channel}`);
-        const chat = document.getElementById('chat');
-        chat.innerHTML = '';
+        socket.emit('join', {server_id, channel})
+
+        const messages = await get(`/message/get/${server_id}/${channel}`)
+        const chat = document.getElementById('chat')
+        chat.innerHTML = ''
         messages.forEach(m => {
-            chat.innerHTML += `<div>${m.id}: ${m.message}</div>`;
-        });
-        chat.scrollTop = chat.scrollHeight;
-
-        // --- START JITSI LOGIC ---
-        startVideo(server_id, channel);
+            chat.innerHTML += `<div>${m.id}: ${m.message}</div>`
+        })
+        chat.scrollTop = chat.scrollHeight
     }
-
-    function startVideo(server, channel) {
-        // If a call is already running, dispose of it first
-        if (jitsiApi) {
-            jitsiApi.dispose();
-        }
-
-        const domain = 'meet.jit.si';
-        const options = {
-            roomName: `ChatTest_${server}_${channel}`, // Unique room name
-            width: '100%',
-            height: 500,
-            parentNode: document.querySelector('#meet'),
-            userInfo: {
-                displayName: currentUser || 'Anonymous'
-            },
-            interfaceConfigOverwrite: {
-                // Customize UI here if needed
-                TILE_VIEW_MAX_COLUMNS: 2
-            }
-        };
-        jitsiApi = new JitsiMeetExternalAPI(domain, options);
-    }
-
 
     async function sendMessage() {
-    if (!currentUser) return alert('Login first');
-    
-    const input = document.getElementById('message-input');
-    const msg = input.value.trim();
-    
-    if (!msg || !currentServer || !currentChannel) return;
-
-    try {
-        const response = await post('/message/send', { 
-            username: currentUser, 
-            server_id: currentServer, 
-            channel: currentChannel, 
-            msg: msg 
-        });
-
-        if (response.status === "success") {
-            input.value = ''; 
-        } else {
-            alert("Error: " + response.msg);
-        }
-    } catch (err) {
-        console.error("Failed to send:", err);
+        if (!currentUser) return alert('login first')
+        const msg = document.getElementById('message-input').value.trim()
+        if (!msg) return
+        await post('/message/send', {
+            username: currentUser,
+            server_id: currentServer,
+            channel: currentChannel,
+            msg
+        })
+        document.getElementById('message-input').value = ''
     }
-}
 
     socket.on('new-message', function(data) {
         const chat = document.getElementById('chat')
